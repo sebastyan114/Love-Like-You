@@ -10,18 +10,51 @@
       color: #4b0082;
       text-align: center;
       padding: 2rem;
+      overflow: hidden;
+      position: relative;
     }
+
     h1 {
       font-size: 2.5rem;
       margin-bottom: 1rem;
+      animation: flotar 3s ease-in-out infinite;
     }
+
     p {
       font-size: 1.2rem;
       margin: 0.5rem;
+      animation: flotar 4s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .heart {
+      position: absolute;
+      color: #ff69b4;
+      font-size: 24px;
+      animation: caer 8s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes caer {
+      0% {
+        top: -50px;
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        top: 100vh;
+        opacity: 0;
+      }
     }
 
     iframe {
-      display: none; /* Oculta el reproductor de YouTube */
+      display: none;
     }
   </style>
 </head>
@@ -34,7 +67,25 @@
   <p>Con cada suspiro te nombro.</p>
   <p>Gracias por existir.</p>
 
-  <!-- Música de fondo desde YouTube -->
+  <!-- Música de fondo -->
   <iframe width="0" height="0" src="https://www.youtube.com/embed/22ltlLZsibw?autoplay=1&loop=1&playlist=22ltlLZsibw" frameborder="0" allow="autoplay"></iframe>
+
+  <!-- Corazoncitos -->
+  <script>
+    function crearCorazon() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 8000);
+    }
+
+    setInterval(crearCorazon, 300);
+  </script>
 </body>
 </html>
