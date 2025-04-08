@@ -53,6 +53,26 @@
       }
     }
 
+    .boton-corazon {
+      font-size: 4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      animation: latir 1s infinite;
+      color: #ff1493;
+      margin-top: 2rem;
+      transition: transform 0.2s;
+    }
+
+    .boton-corazon:hover {
+      transform: scale(1.2);
+    }
+
+    @keyframes latir {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
     iframe {
       display: none;
     }
@@ -67,20 +87,18 @@
   <p>Con cada suspiro te nombro.</p>
   <p>Gracias por existir.</p>
 
-<audio id="musica" loop>
-  <source src="musica.mp3" type="audio/mpeg">
-</audio>
+  <button class="boton-corazon" onclick="reproducirMusica()">❤️</button>
 
-<script>
-  document.addEventListener('click', () => {
-    const audio = document.getElementById('musica');
-    audio.play();
-  }, { once: true });
-</script>
+  <audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
 
-
-  
   <script>
+    function reproducirMusica() {
+      const audio = document.getElementById('musica');
+      audio.play();
+    }
+
     function crearCorazon() {
       const heart = document.createElement("div");
       heart.className = "heart";
