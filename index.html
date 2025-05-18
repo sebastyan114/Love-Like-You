@@ -333,7 +333,7 @@
 
           // Establecer fecha objetivo (15 días desde hoy)
           const fechaActual = new Date();
-          const fechaFutura = new Date(fechaActual.getTime() + 15 * 24 * 60 * 60 * 1000);
+          const fechaFutura = new Date(fechaActual.getTime() + 3 * 24 * 60 * 60 * 1000);
           localStorage.setItem(claveObjetivo, fechaFutura.toISOString());
 
           objetivo = fechaFutura;
