@@ -331,14 +331,28 @@
           explosion.style.display = 'none';
           huevo.style.display = 'block';
 
-          // Establecer fecha objetivo (15 días desde hoy)
-          const fechaActual = new Date();
-          const fechaFutura = new Date(fechaActual.getTime() + 3 * 24 * 60 * 60 * 1000);
-          localStorage.setItem(claveObjetivo, fechaFutura.toISOString());
+// Establecer fecha objetivo (3 días desde hoy)
+const fechaActual = new Date();
+const fechaFutura = new Date(fechaActual.getTime() + 3 * 24 * 60 * 60 * 1000);
 
-          objetivo = fechaFutura;
-          cuentaRegresivaEl.style.display = 'block';
-          iniciarCuentaRegresiva(objetivo);
+const versionActual = "v2"; // Cambia esto cuando actualices la lógica
+const claveObjetivo = "cuentaRegresiva_" + nombreUsuario;
+const claveVersion = "cuentaRegresiva_version_" + nombreUsuario;
+
+// Verificar versión
+const versionGuardada = localStorage.getItem(claveVersion);
+if (versionGuardada !== versionActual) {
+    localStorage.removeItem(claveObjetivo);
+    localStorage.setItem(claveVersion, versionActual);
+}
+
+// Guardar fecha futura
+localStorage.setItem(claveObjetivo, fechaFutura.toISOString());
+
+objetivo = fechaFutura;
+cuentaRegresivaEl.style.display = 'block';
+iniciarCuentaRegresiva(objetivo);
+
         }, 2000);
       }, 1300);
     };
