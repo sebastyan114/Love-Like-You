@@ -63,6 +63,22 @@
       display: block;
     }
 
+    /* Contador estilo */
+    #contador {
+      margin-top: 1.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #d147a3;
+      background-color: #ffe4f1;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #d147a3;
+      user-select: none;
+      text-align: center;
+      width: fit-content;
+      min-width: 250px;
+    }
+
     /* Corazones flotantes */
     .heart {
       position: absolute;
@@ -190,6 +206,10 @@
       .elemento {
         width: 180px;
       }
+      #contador {
+        min-width: 180px;
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
@@ -248,17 +268,50 @@
     <img id="huevoAnimado" src="com-animated-gif-maker-1--unscreen.gif" class="elemento" alt="Huevo animado" />
   </div>
 
-  <!-- <div id="cuentaRegresiva"> </div> --> <!-- Contador borrado -->
+  <!-- Contador que cuenta 3 días desde que aparece el huevo -->
+  <div id="contador" style="display:none;"></div>
 
   <script>
-    // Animación de la caja y huevo sin cuenta regresiva
     const cajaEstatica = document.getElementById('cajaEstatica');
     const cajaAnimada = document.getElementById('cajaAnimada');
     const explosion = document.getElementById('explosion');
     const huevo = document.getElementById('huevo');
     const huevoAnimado = document.getElementById('huevoAnimado');
+    const contadorDiv = document.getElementById('contador');
 
-    // No se usa cuenta regresiva ni localStorage para fecha
+    let contadorInterval = null;
+    let tiempoFin = null; // Timestamp en milisegundos cuando el contador termine
+
+    function iniciarContadorTresDias() {
+      // Fijar el tiempo final 3 días (72 horas) desde ahora
+      tiempoFin = Date.now() + 3 * 24 * 60 * 60 * 1000; // 3 días en ms
+
+      contadorDiv.style.display = 'block';
+
+      contadorInterval = setInterval(() => {
+        const ahora = Date.now();
+        let diff = tiempoFin - ahora;
+
+        if (diff <= 0) {
+          clearInterval(contadorInterval);
+          contadorDiv.style.display = 'none';
+          return;
+        }
+
+        const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+        diff -= dias * (1000 * 60 * 60 * 24);
+
+        const horas = Math.floor(diff / (1000 * 60 * 60));
+        diff -= horas * (1000 * 60 * 60);
+
+        const minutos = Math.floor(diff / (1000 * 60));
+        diff -= minutos * (1000 * 60);
+
+        const segundos = Math.floor(diff / 1000);
+
+        contadorDiv.textContent = `Tiempo restante: ${dias}d ${horas}h ${minutos}m ${segundos}s`;
+      }, 1000);
+    }
 
     cajaEstatica.onclick = () => {
       cajaEstatica.style.display = 'none';
@@ -271,6 +324,10 @@
         setTimeout(() => {
           explosion.style.display = 'none';
           huevo.style.display = 'block';
+
+          // Aquí inicia el contador de 3 días cuando aparece el huevo estático
+          iniciarContadorTresDias();
+
         }, 2000);
       }, 1300);
     };
