@@ -379,6 +379,50 @@
       huevo.style.display = 'block';
     }, 3000);
   };
+    // Animación corazones flotantes
+    function crearCorazon() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '❤️';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.animationDuration = 6 + Math.random() * 4 + 's';
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+
+    setInterval(crearCorazon, 800);
+
+    // Reproducir/pausar música
+    const musica = document.getElementById('musica');
+    let reproduciendo = false;
+
+    function reproducirMusica() {
+      if (!reproduciendo) {
+        musica.play();
+        reproduciendo = true;
+      } else {
+        musica.pause();
+        reproduciendo = false;
+      }
+    }
+
+    // Mostrar la lista de cualidades
+    const botonMagico = document.querySelector('.boton-magico');
+    const topLista = document.getElementById('topLista');
+
+    function mostrarLista() {
+      if (topLista.style.display === 'block') {
+        topLista.style.display = 'none';
+        botonMagico.textContent = 'Todo lo que me gusta de ti';
+      } else {
+        topLista.style.display = 'block';
+        botonMagico.textContent = 'Ocultar lista';
+      }
+      
+    }
 
 </script>
 </body>
