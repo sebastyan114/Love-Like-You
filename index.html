@@ -63,21 +63,6 @@
       display: block;
     }
 
-    /* Cuenta regresiva estilo acorde con la página */
-    #cuentaRegresiva {
-      color: #4b0082;
-      font-size: 1.3rem;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: rgba(255, 192, 203, 0.7);
-      padding: 10px 20px;
-      border-radius: 10px;
-      margin-top: 15px;
-      user-select: none;
-      width: max-content;
-      text-align: center;
-      box-shadow: 0 0 10px #ff69b4;
-    }
-
     /* Corazones flotantes */
     .heart {
       position: absolute;
@@ -263,61 +248,17 @@
     <img id="huevoAnimado" src="com-animated-gif-maker-1--unscreen.gif" class="elemento" alt="Huevo animado" />
   </div>
 
-  <div id="cuentaRegresiva"> </div>
+  <!-- <div id="cuentaRegresiva"> </div> --> <!-- Contador borrado -->
+
   <script>
-    // Animación de la caja y huevo con cuenta regresiva
+    // Animación de la caja y huevo sin cuenta regresiva
     const cajaEstatica = document.getElementById('cajaEstatica');
     const cajaAnimada = document.getElementById('cajaAnimada');
     const explosion = document.getElementById('explosion');
     const huevo = document.getElementById('huevo');
     const huevoAnimado = document.getElementById('huevoAnimado');
-    const cuentaRegresivaEl = document.getElementById("cuentaRegresiva");
 
-    let objetivo = null;
-    const claveObjetivo = "fechaObjetivoDesdeHuevo";
-
-    function iniciarCuentaRegresiva(fechaObjetivo) {
-      function actualizar() {
-        const ahora = new Date();
-        const diferencia = fechaObjetivo - ahora;
-
-        if (diferencia <= 0) {
-          cuentaRegresivaEl.textContent = "¡El tiempo ha terminado!";
-          clearInterval(intervalo);
-          return;
-        }
-
-        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-        const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
-        const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
-        const segundos = Math.floor((diferencia / 1000) % 60);
-
-        cuentaRegresivaEl.textContent = `Faltan ${dias}d ${horas}h ${minutos}m ${segundos}s`;
-      }
-
-      actualizar();
-      var intervalo = setInterval(actualizar, 1000);
-    }
-
-    if (localStorage.getItem(claveObjetivo)) {
-      objetivo = new Date(localStorage.getItem(claveObjetivo));
-
-      cajaEstatica.style.display = 'none';
-      cajaAnimada.style.display = 'none';
-      explosion.style.display = 'none';
-      huevo.style.display = 'block';
-      huevoAnimado.style.display = 'none';
-      cuentaRegresivaEl.style.display = 'block';
-
-      iniciarCuentaRegresiva(objetivo);
-    } else {
-      cajaEstatica.style.display = 'block';
-      cuentaRegresivaEl.style.display = 'none';
-      cajaAnimada.style.display = 'none';
-      explosion.style.display = 'none';
-      huevo.style.display = 'none';
-      huevoAnimado.style.display = 'none';
-    }
+    // No se usa cuenta regresiva ni localStorage para fecha
 
     cajaEstatica.onclick = () => {
       cajaEstatica.style.display = 'none';
@@ -330,33 +271,6 @@
         setTimeout(() => {
           explosion.style.display = 'none';
           huevo.style.display = 'block';
-     
-
-
-// Establecer fecha objetivo (3 días desde hoy)
-          localStorage.clear();
-
-const fechaActual = new Date();
-const fechaFutura = new Date(fechaActual.getTime() + 3 * 24 * 60 * 60 * 1000);
-
-const versionActual = "v3"; // Cambia esto cuando actualices la lógica
-const claveObjetivo = "cuentaRegresiva_" + nombreUsuario;
-const claveVersion = "cuentaRegresiva_version_" + nombreUsuario;
-
-// Verificar versión
-const versionGuardada = localStorage.getItem(claveVersion);
-if (versionGuardada !== versionActual) {
-    localStorage.removeItem(claveObjetivo);
-    localStorage.setItem(claveVersion, versionActual);
-}
-
-// Guardar fecha futura
-localStorage.setItem(claveObjetivo, fechaFutura.toISOString());
-
-objetivo = fechaFutura;
-cuentaRegresivaEl.style.display = 'block';
-iniciarCuentaRegresiva(objetivo);
-
         }, 2000);
       }, 1300);
     };
@@ -371,52 +285,46 @@ iniciarCuentaRegresiva(objetivo);
       }, 3000);
     };
 
-    // Animación corazones flotantes
+    // Animación corazones que caen
     function crearCorazon() {
       const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.textContent = '❤️';
+      heart.classList.add('heart');
       heart.style.left = Math.random() * window.innerWidth + 'px';
-      heart.style.animationDuration = 6 + Math.random() * 4 + 's';
+      heart.style.animationDuration = 5 + Math.random() * 3 + 's';
+      heart.style.fontSize = 12 + Math.random() * 24 + 'px';
+      heart.innerText = '❤️';
       document.body.appendChild(heart);
 
       setTimeout(() => {
         heart.remove();
-      }, 10000);
+      }, 8000);
     }
 
-    setInterval(crearCorazon, 800);
+    setInterval(crearCorazon, 600);
 
-    // Reproducir/pausar música
-    const musica = document.getElementById('musica');
-    let reproduciendo = false;
-
+    // Botón de reproducción de música
+    let musicaReproduciendose = false;
     function reproducirMusica() {
-      if (!reproduciendo) {
-        musica.play();
-        reproduciendo = true;
-      } else {
-        musica.pause();
-        reproduciendo = false;
+      if (!musicaReproduciendose) {
+        const audio = new Audio('musica.mp3');
+        audio.loop = true;
+        audio.play();
+        musicaReproduciendose = true;
       }
     }
 
-    // Mostrar la lista de cualidades
+    // Mostrar lista de cosas que le gustan
     const botonMagico = document.querySelector('.boton-magico');
     const topLista = document.getElementById('topLista');
 
     function mostrarLista() {
       if (topLista.style.display === 'block') {
         topLista.style.display = 'none';
-        botonMagico.textContent = 'Todo lo que me gusta de ti';
       } else {
         topLista.style.display = 'block';
-        botonMagico.textContent = 'Ocultar lista';
+        topLista.scrollIntoView({ behavior: 'smooth' });
       }
-      
     }
-    
   </script>
-  
 </body>
 </html>
