@@ -223,6 +223,7 @@
   <p>Gracias por existir.</p>
 
   <button class="boton-corazon" onclick="reproducirMusica()">❤️</button>
+  <audio id="miAudio" src="musica.mp3"></audio>
 
   <div class="playlist">
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3wscpe3RT6zCv4zlOyGE0F?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
@@ -423,7 +424,10 @@
       }
       
     }
-
+function reproducirMusica() {
+  const audio = document.getElementById('miAudio');
+  audio.play();
+}
 </script>
 </body>
 </html>
