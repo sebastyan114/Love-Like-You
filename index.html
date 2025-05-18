@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Para Laurita 💖</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Caja → Explosión → Huevo + Para Laurita 💖</title>
   <style>
+    /* Estilos generales */
     body {
+      margin: 0;
       background-color: #fff0f5;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #4b0082;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 2rem;
+      min-height: 100vh;
       overflow-x: hidden;
       position: relative;
     }
@@ -19,12 +24,15 @@
       font-size: 2.5rem;
       margin-bottom: 1rem;
       animation: flotar 3s ease-in-out infinite;
+      text-align: center;
     }
 
     p {
       font-size: 1.2rem;
       margin: 0.5rem;
       animation: flotar 4s ease-in-out infinite;
+      text-align: center;
+      max-width: 700px;
     }
 
     @keyframes flotar {
@@ -32,12 +40,54 @@
       50% { transform: translateY(-10px); }
     }
 
+    /* Contenedor de la animación de caja y huevo */
+    .contenedor {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      margin: 2rem 0;
+    }
+
+    .elemento {
+      width: 250px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #cajaEstatica {
+      display: block;
+    }
+
+    /* Cuenta regresiva estilo acorde con la página */
+    #cuentaRegresiva {
+      color: #4b0082;
+      font-size: 1.3rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: rgba(255, 192, 203, 0.7);
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 15px;
+      user-select: none;
+      width: max-content;
+      text-align: center;
+      box-shadow: 0 0 10px #ff69b4;
+    }
+
+    /* Corazones flotantes */
     .heart {
       position: absolute;
       color: #ff69b4;
       font-size: 24px;
       animation: caer 8s linear infinite;
       opacity: 0.8;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1000;
     }
 
     @keyframes caer {
@@ -54,6 +104,7 @@
       }
     }
 
+    /* Botón corazón para música */
     .boton-corazon {
       font-size: 3.5rem;
       background: none;
@@ -63,6 +114,7 @@
       color: #ff1493;
       margin-top: 2rem;
       transition: transform 0.2s;
+      user-select: none;
     }
 
     .boton-corazon:hover {
@@ -80,10 +132,15 @@
 
     .playlist {
       margin-top: 2rem;
+      max-width: 700px;
+      width: 100%;
     }
 
     .playlist iframe {
       border-radius: 12px;
+      width: 100%;
+      height: 152px;
+      border: none;
     }
 
     .frase {
@@ -91,6 +148,9 @@
       font-style: italic;
       font-size: 1.1rem;
       color: #8b008b;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .boton-magico {
@@ -104,6 +164,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 0 15px #ff69b4;
+      user-select: none;
     }
 
     .boton-magico:hover {
@@ -123,6 +184,7 @@
       margin-right: auto;
       animation: aparecer 1s ease forwards;
       white-space: pre-wrap;
+      color: #4b0082;
     }
 
     @keyframes aparecer {
@@ -130,11 +192,19 @@
       to { opacity: 1; transform: scale(1); }
     }
 
+    /* Responsive */
     @media (max-width: 600px) {
       h1 { font-size: 2rem; }
       p { font-size: 1rem; }
       .boton-corazon { font-size: 3rem; }
       .heart { font-size: 16px; }
+      .contenedor {
+        width: 180px;
+        height: 180px;
+      }
+      .elemento {
+        width: 180px;
+      }
     }
   </style>
 </head>
@@ -148,10 +218,6 @@
   <p>Gracias por existir.</p>
 
   <button class="boton-corazon" onclick="reproducirMusica()">❤️</button>
-
-  <audio id="musica" loop>
-    <source src="musica.mp3" type="audio/mpeg">
-  </audio>
 
   <div class="playlist">
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3wscpe3RT6zCv4zlOyGE0F?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
@@ -189,33 +255,150 @@
     - Tienes unos ojos hermosamente expresivos, labios carnosos, una nariz tierna; tu rostro es el balance entre tierno y sensual  
   </div>
 
+  <div class="contenedor">
+    <img id="cajaEstatica" src="Chest.png" class="elemento" alt="Caja cerrada" />
+    <img id="cajaAnimada" src="Chest.webp" class="elemento" alt="Caja abriéndose" />
+    <img id="explosion" src="Boom Explode Sticker by Batuhan Kindil.gif" class="elemento" alt="Explosión" />
+    <img id="huevo" src="huevo_1-removebg-preview.png" class="elemento" alt="Huevo estático" />
+    <img id="huevoAnimado" src="com-animated-gif-maker-1--unscreen.gif" class="elemento" alt="Huevo animado" />
+  </div>
+
+  <div id="cuentaRegresiva"> </div>
   <script>
-    function reproducirMusica() {
-      const audio = document.getElementById('musica');
-      audio.play();
+    // Animación de la caja y huevo con cuenta regresiva
+    const cajaEstatica = document.getElementById('cajaEstatica');
+    const cajaAnimada = document.getElementById('cajaAnimada');
+    const explosion = document.getElementById('explosion');
+    const huevo = document.getElementById('huevo');
+    const huevoAnimado = document.getElementById('huevoAnimado');
+    const cuentaRegresivaEl = document.getElementById("cuentaRegresiva");
+
+    let objetivo = null;
+    const claveObjetivo = "fechaObjetivoDesdeHuevo";
+
+    function iniciarCuentaRegresiva(fechaObjetivo) {
+      function actualizar() {
+        const ahora = new Date();
+        const diferencia = fechaObjetivo - ahora;
+
+        if (diferencia <= 0) {
+          cuentaRegresivaEl.textContent = "¡El tiempo ha terminado!";
+          clearInterval(intervalo);
+          return;
+        }
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+        const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+        const segundos = Math.floor((diferencia / 1000) % 60);
+
+        cuentaRegresivaEl.textContent = `Faltan ${dias}d ${horas}h ${minutos}m ${segundos}s`;
+      }
+
+      actualizar();
+      var intervalo = setInterval(actualizar, 1000);
     }
 
+    if (localStorage.getItem(claveObjetivo)) {
+      objetivo = new Date(localStorage.getItem(claveObjetivo));
+
+      cajaEstatica.style.display = 'none';
+      cajaAnimada.style.display = 'none';
+      explosion.style.display = 'none';
+      huevo.style.display = 'block';
+      huevoAnimado.style.display = 'none';
+      cuentaRegresivaEl.style.display = 'block';
+
+      iniciarCuentaRegresiva(objetivo);
+    } else {
+      cajaEstatica.style.display = 'block';
+      cuentaRegresivaEl.style.display = 'none';
+      cajaAnimada.style.display = 'none';
+      explosion.style.display = 'none';
+      huevo.style.display = 'none';
+      huevoAnimado.style.display = 'none';
+    }
+
+    cajaEstatica.onclick = () => {
+      cajaEstatica.style.display = 'none';
+      cajaAnimada.style.display = 'block';
+
+      setTimeout(() => {
+        cajaAnimada.style.display = 'none';
+        explosion.style.display = 'block';
+
+        setTimeout(() => {
+          explosion.style.display = 'none';
+          huevo.style.display = 'block';
+
+          // Establecer fecha objetivo (15 días desde hoy)
+          const fechaActual = new Date();
+          const fechaFutura = new Date(fechaActual.getTime() + 15 * 24 * 60 * 60 * 1000);
+          localStorage.setItem(claveObjetivo, fechaFutura.toISOString());
+
+          objetivo = fechaFutura;
+          cuentaRegresivaEl.style.display = 'block';
+          iniciarCuentaRegresiva(objetivo);
+        }, 2000);
+      }, 1300);
+    };
+
+    huevo.onclick = () => {
+      huevo.style.display = 'none';
+      huevoAnimado.style.display = 'block';
+
+      setTimeout(() => {
+        huevoAnimado.style.display = 'none';
+        huevo.style.display = 'block';
+      }, 3000);
+    };
+
+    // Animación corazones flotantes
     function crearCorazon() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.textContent = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '❤️';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.animationDuration = 6 + Math.random() * 4 + 's';
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 8000);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
     }
 
-    setInterval(crearCorazon, 300);
+    setInterval(crearCorazon, 800);
 
-    function mostrarLista() {
-      const lista = document.getElementById('topLista');
-      if (lista.style.display === 'none' || lista.style.display === '') {
-        lista.style.display = 'block';
-        lista.scrollIntoView({ behavior: 'smooth' });
+    // Reproducir/pausar música
+    const musica = document.getElementById('musica');
+    let reproduciendo = false;
+
+    function reproducirMusica() {
+      if (!reproduciendo) {
+        musica.play();
+        reproduciendo = true;
       } else {
-        lista.style.display = 'none';
+        musica.pause();
+        reproduciendo = false;
       }
     }
+
+    // Mostrar la lista de cualidades
+    const botonMagico = document.querySelector('.boton-magico');
+    const topLista = document.getElementById('topLista');
+
+    function mostrarLista() {
+      if (topLista.style.display === 'block') {
+        topLista.style.display = 'none';
+        botonMagico.textContent = 'Todo lo que me gusta de ti';
+      } else {
+        topLista.style.display = 'block';
+        botonMagico.textContent = 'Ocultar lista';
+      }
+      
+    }
+    
   </script>
+  
 </body>
 </html>
