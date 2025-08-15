@@ -6,6 +6,47 @@
   <title>Caja → Explosión → Huevo + Para Laurita 💖</title>
   <style>
     /* Estilos generales */
+    <!-- Pantalla de felicitación -->
+<div id="pantallaFeliz" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:#ffebf0;
+  color:#d147a3;
+  font-family:'Segoe UI', sans-serif;
+  text-align:center;
+  padding:2rem;
+  z-index:9999;
+  overflow:auto;
+">
+  <h1 style="font-size:3rem; margin-top:20vh;">Feliz cumpleaños corazoncito 💖</h1>
+  <p style="font-size:1.5rem; max-width:800px; margin:2rem auto;">
+    Te amo mucho y espero poder acompañarte en todos tus cumpleaños que están por venir.
+  </p>
+</div>
+
+<!-- Audio de felicitación -->
+<audio id="audioFeliz" src="feliz.mp3" loop></audio>
+    <h2 style="margin-top:2rem;">🎂 Calendario de cumpleaños 🎂</h2>
+<table id="tablaCumple" border="1" style="margin:1rem auto; border-collapse:collapse; background:white;">
+  <thead>
+    <tr>
+      <th style="padding:0.5rem;">Lun</th>
+      <th style="padding:0.5rem;">Mar</th>
+      <th style="padding:0.5rem;">Mié</th>
+      <th style="padding:0.5rem;">Jue</th>
+      <th style="padding:0.5rem;">Vie</th>
+      <th style="padding:0.5rem;">Sáb</th>
+      <th style="padding:0.5rem;">Dom</th>
+    </tr>
+  </thead>
+  <tbody id="bodyCalendario"></tbody>
+</table>
+
+
     body {
       margin: 0;
       background-color: #fff0f5;
@@ -285,7 +326,7 @@
   let tiempoFin = null; // Timestamp en milisegundos cuando el contador termine
   const keyHuevoFecha = 'fechaAparicionHuevo';
 
-  function iniciarContador() {
+ function iniciarContador() {
   const fechaObjetivo = new Date('2025-08-15T00:00:00').getTime();
   contadorDiv.style.display = 'block';
 
@@ -297,7 +338,7 @@
 
     if (diff <= 0) {
       clearInterval(contadorInterval);
-      contadorDiv.textContent = "¡Llegó el día especial! 🎉💖";
+      mostrarPantallaFeliz();
       return;
     }
 
@@ -315,6 +356,87 @@
     contadorDiv.textContent = `Tiempo restante: ${dias}d ${horas}h ${minutos}m ${segundos}s`;
   }, 1000);
 }
+
+function mostrarPantallaFeliz() {
+  const pantalla = document.getElementById('pantallaFeliz');
+  const musicaFeliz = document.getElementById('audioFeliz');
+
+  pantalla.style.display = 'block';
+  musicaFeliz.play();
+
+  generarCalendario(2025, 8); // Agosto 2025
+
+  pantalla.addEventListener('click', () => {
+    pantalla.style.display = 'none';
+    musicaFeliz.pause();
+    musicaFeliz.currentTime = 0;
+  });
+}
+
+function generarCalendario(año, mes) {
+  const tbody = document.getElementById('bodyCalendario');
+  tbody.innerHTML = "";
+
+  let fecha = new Date(año, mes - 1, 1);
+  let primerDia = fecha.getDay(); // 0 domingo, 1 lunes...
+  if (primerDia === 0) primerDia = 7;
+
+  let diasMes = new Date(año, mes, 0).getDate();
+  let fila = document.createElement('tr');
+
+  // Espacios vacíos antes del primer día
+  for (let i = 1; i < primerDia; i++) {
+    fila.appendChild(document.createElement('td'));
+  }
+
+  for (let dia = 1; dia <= diasMes; dia++) {
+    let celda = document.createElement('td');
+    celda.style.width = "80px";
+    celda.style.height = "80px";
+    celda.style.textAlign = "center";
+    celda.style.verticalAlign = "top";
+    celda.style.cursor = "pointer";
+    celda.style.position = "relative";
+    celda.innerHTML = `<div>${dia}</div>`;
+
+    // Mostrar imagen si ya existe
+    let imgData = localStorage.getItem(`foto_${año}_${mes}_${dia}`);
+    if (imgData) {
+      let img = document.createElement('img');
+      img.src = imgData;
+      img.style.width = "100%";
+      img.style.height = "auto";
+      celda.appendChild(img);
+    }
+
+    celda.addEventListener('click', () => {
+      let input = document.createElement('input');
+      input.type = "file";
+      input.accept = "image/*";
+      input.onchange = e => {
+        let file = e.target.files[0];
+        if (file) {
+          let reader = new FileReader();
+          reader.onload = function(evt) {
+            localStorage.setItem(`foto_${año}_${mes}_${dia}`, evt.target.result);
+            generarCalendario(año, mes); // Recargar calendario
+          }
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    });
+
+    fila.appendChild(celda);
+
+    if ((primerDia + dia - 1) % 7 === 0) {
+      tbody.appendChild(fila);
+      fila = document.createElement('tr');
+    }
+  }
+  tbody.appendChild(fila);
+}
+
 
  function mostrarHuevo() {
   cajaEstatica.style.display = 'none';
