@@ -269,8 +269,9 @@
     <img id="huevoAnimado" src="com-animated-gif-maker-1--unscreen.gif" class="elemento" alt="Huevo animado" />
   </div>
 
-  <!-- Contador que cuenta 3 días desde que aparece el huevo -->
-  <div id="contador" style="display:none;"></div>
+  <!-- Contador hacia el 15 de agosto de 2025 -->
+<div id="contador" style="display:none;"></div>
+
 
   <script>
   const cajaEstatica = document.getElementById('cajaEstatica');
@@ -284,45 +285,45 @@
   let tiempoFin = null; // Timestamp en milisegundos cuando el contador termine
   const keyHuevoFecha = 'fechaAparicionHuevo';
 
-  function iniciarContador(tiempoInicio) {
-    // tiempoInicio es timestamp cuando apareció el huevo
-    tiempoFin = tiempoInicio + 3 * 24 * 60 * 60 * 1000; // 3 días después del inicio
-    contadorDiv.style.display = 'block';
+  function iniciarContador() {
+  const fechaObjetivo = new Date('2025-08-15T00:00:00').getTime();
+  contadorDiv.style.display = 'block';
 
-    if (contadorInterval) clearInterval(contadorInterval);
-    
-    contadorInterval = setInterval(() => {
-      const ahora = Date.now();
-      let diff = tiempoFin - ahora;
+  if (contadorInterval) clearInterval(contadorInterval);
 
-      if (diff <= 0) {
-        clearInterval(contadorInterval);
-        contadorDiv.style.display = 'none';
-        return;
-      }
+  contadorInterval = setInterval(() => {
+    const ahora = Date.now();
+    let diff = fechaObjetivo - ahora;
 
-      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-      diff -= dias * (1000 * 60 * 60 * 24);
+    if (diff <= 0) {
+      clearInterval(contadorInterval);
+      contadorDiv.textContent = "¡Llegó el día especial! 🎉💖";
+      return;
+    }
 
-      const horas = Math.floor(diff / (1000 * 60 * 60));
-      diff -= horas * (1000 * 60 * 60);
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    diff -= dias * (1000 * 60 * 60 * 24);
 
-      const minutos = Math.floor(diff / (1000 * 60));
-      diff -= minutos * (1000 * 60);
+    const horas = Math.floor(diff / (1000 * 60 * 60));
+    diff -= horas * (1000 * 60 * 60);
 
-      const segundos = Math.floor(diff / 1000);
+    const minutos = Math.floor(diff / (1000 * 60));
+    diff -= minutos * (1000 * 60);
 
-      contadorDiv.textContent = `Tiempo restante: ${dias}d ${horas}h ${minutos}m ${segundos}s`;
-    }, 1000);
-  }
+    const segundos = Math.floor(diff / 1000);
 
-  function mostrarHuevo() {
-    cajaEstatica.style.display = 'none';
-    cajaAnimada.style.display = 'none';
-    explosion.style.display = 'none';
+    contadorDiv.textContent = `Tiempo restante: ${dias}d ${horas}h ${minutos}m ${segundos}s`;
+  }, 1000);
+}
 
-    huevo.style.display = 'block';
-  }
+ function mostrarHuevo() {
+  cajaEstatica.style.display = 'none';
+  cajaAnimada.style.display = 'none';
+  explosion.style.display = 'none';
+
+  huevo.style.display = 'block';
+  iniciarContador(); // Ahora cuenta hasta el 15 de agosto 2025
+}
 
   // Al cargar la página, revisamos si el huevo ya apareció antes
   window.addEventListener('load', () => {
